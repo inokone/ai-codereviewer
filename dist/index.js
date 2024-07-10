@@ -92,14 +92,16 @@ function analyzeCode(parsedDiff, prDetails) {
             if (file.to === "/dev/null")
                 continue; // Ignore deleted files
             for (const chunk of file.chunks) {
-                const prompt = createPrompt(file, chunk, prDetails);
-                const aiResponse = yield getAIResponse(prompt);
-                if (aiResponse) {
-                    const newComments = createComment(file, chunk, aiResponse);
-                    if (newComments) {
-                        comments.push(...newComments);
+                yield new Promise(f => setTimeout(f, 500)).then(() => __awaiter(this, void 0, void 0, function* () {
+                    const prompt = createPrompt(file, chunk, prDetails);
+                    const aiResponse = yield getAIResponse(prompt);
+                    if (aiResponse) {
+                        const newComments = createComment(file, chunk, aiResponse);
+                        if (newComments) {
+                            comments.push(...newComments);
+                        }
                     }
-                }
+                }));
             }
         }
         return comments;
